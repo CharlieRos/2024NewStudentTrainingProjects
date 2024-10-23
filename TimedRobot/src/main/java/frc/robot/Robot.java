@@ -4,11 +4,21 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class Robot extends TimedRobot {
+
+  private TalonFX motor;
+
+  private XboxController controller;
+
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    motor = new TalonFX(12);
+  }
 
   @Override
   public void robotPeriodic() {}
@@ -20,10 +30,23 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    controller = new XboxController(0);
+  }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if (controller.getAButton()) {
+      motor.set(.2);
+    } else if (controller.getBButton()) {
+      motor.set(-.2);
+    } else if (controller.getXButton()) {
+      motor.set(.8);
+    }
+    else {
+      motor.set(0);
+    }
+  }
 
   @Override
   public void disabledInit() {}
