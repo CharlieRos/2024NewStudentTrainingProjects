@@ -4,21 +4,18 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.team1699.subsystems.TankDrive;
 
 public class Robot extends TimedRobot {
-  private TalonFX motor;
-
+  private TankDrive drive;
   private XboxController controller;
 
   @Override
   public void robotInit() {
-    motor = new TalonFX(12);
-
-    controller = new XboxController(0);
+    drive = new TankDrive();
+    controller = new XboxController(-1);
   }
 
   @Override
@@ -35,15 +32,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if(controller.getAButton()) {
-      motor.set(.2);
-    } else if(controller.getBButton()) {
-      motor.set(.5);
-    } else if(controller.getYButton()) {
-      motor.set(-.5);
-    } else {
-      motor.set(0);
-    }
+    drive.arcadeDrive(controller);
   }
 
   @Override
