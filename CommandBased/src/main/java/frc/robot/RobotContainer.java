@@ -7,16 +7,27 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.team1699.subsystems.Intake;
+import frc.team1699.subsystems.TankDrive;
 
 public class RobotContainer {
   private CommandXboxController driverController;
+  private TankDrive drive;
+  private Intake intake;
 
   public RobotContainer() {
     driverController = new CommandXboxController(-1);
+    drive = new TankDrive();
+    intake = new Intake();
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    driverController.rightTrigger().onTrue(intake.intake()).onFalse(intake.stop());
+    driverController.leftTrigger().onTrue(intake.outtake()).onFalse(intake.stop());
+
+    drive.setDefaultCommand(drive.arcadeDrive(driverController.getLeftY(), driverController.getLeftX()));
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
